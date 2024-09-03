@@ -51,6 +51,26 @@ class CustomCheckpointSaver(CheckpointSaver):
         # Use shutil.copy instead of os.link
         shutil.copy(last_save_path, save_path)
 #--------------------------------------------------------------
+#-------------Viet lai save checkpoint dung torch
+import torch
+
+def save_model_checkpoint(model, optimizer, epoch, metric, checkpoint_dir):
+    # Define paths
+    model_path = os.path.join(checkpoint_dir, f'model_epoch_{epoch}.pth')
+    optimizer_path = os.path.join(checkpoint_dir, f'optimizer_epoch_{epoch}.pth')
+    
+    # Save model state dictionary
+    torch.save(model.state_dict(), model_path)
+    
+    # Save optimizer state dictionary
+    torch.save(optimizer.state_dict(), optimizer_path)
+    
+    # Optionally save additional information
+    torch.save({
+        'epoch': epoch,
+        'metric': metric
+    }, os.path.join(checkpoint_dir, f'checkpoint_{epoch}.pth'))
+#--------------------------------------------------------------
 try:
     from apex import amp
     from apex.parallel import DistributedDataParallel as ApexDDP
@@ -656,9 +676,10 @@ def main():
 
         output_dir = utils.get_outdir(args.output if args.output else '/content/drive/My Drive/AI/gcvit', exp_name)
         decreasing = True if eval_metric == 'loss' else False
-        saver = CustomCheckpointSaver(
-            model=model, optimizer=optimizer, args=args, model_ema=model_ema, amp_scaler=loss_scaler,
-            checkpoint_dir=output_dir, recovery_dir=output_dir, decreasing=decreasing, max_history=args.checkpoint_hist)
+        save_model_checkpoint(model, optimizer, epoch, save_metric, checkpoint_dir)
+        #saver = CustomCheckpointSaver(
+         #   model=model, optimizer=optimizer, args=args, model_ema=model_ema, amp_scaler=loss_scaler,
+          #  checkpoint_dir=output_dir, recovery_dir=output_dir, decreasing=decreasing, max_history=args.checkpoint_hist)
         with open(os.path.join(output_dir, 'args.yaml'), 'w') as f:
             f.write(args_text)
 
