@@ -508,17 +508,27 @@ def main():
         _logger.info('Scheduled epochs: {}'.format(num_epochs))
 
     # create the train and eval datasets
+    #dataset_train = create_dataset(
+     #   args.dataset, root=args.data_dir, split=args.train_split, is_training=True,
+      #  class_map=args.class_map,
+       # download=args.dataset_download,
+        #batch_size=args.batch_size,
+        #repeats=args.epoch_repeats)
+
+    #dataset_eval = create_dataset(
+     #   args.dataset, root=args.data_dir, split=args.val_split, is_training=False,
+      #  class_map=args.class_map,
+       # download=args.dataset_download,
+        #batch_size=args.batch_size)
     dataset_train = create_dataset(
         args.dataset, root=args.data_dir, split=args.train_split, is_training=True,
         class_map=args.class_map,
-        download=args.dataset_download,
         batch_size=args.batch_size,
         repeats=args.epoch_repeats)
 
     dataset_eval = create_dataset(
         args.dataset, root=args.data_dir, split=args.val_split, is_training=False,
         class_map=args.class_map,
-        download=args.dataset_download,
         batch_size=args.batch_size)
 
     # setup mixup / cutmix
