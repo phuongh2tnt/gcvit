@@ -14,7 +14,8 @@ import torch
 import torch.nn as nn
 from timm.models.layers import trunc_normal_, DropPath, to_2tuple
 from timm.models.registry import register_model
-from timm.models._builder import build_model_with_cfg
+from timm.models.helpers import build_model_with_cfg
+
 
 
 def _cfg(url='', **kwargs):
