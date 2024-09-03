@@ -31,15 +31,16 @@ from timm.data import create_dataset, create_loader, resolve_data_config, Mixup,
 from timm.models import create_model, safe_model_name, resume_checkpoint, load_checkpoint,\
     convert_splitbn_model, model_parameters
 from timm import utils
-from timm.loss import JsdCrossEntropy, BinaryCrossEntropy, SoftTargetCrossEntropy, BinaryCrossEntropy,\
-    LabelSmoothingCrossEntropy
+from timm.loss import JsdCrossEntropy, SoftTargetCrossEntropy, LabelSmoothingCrossEntropy #xoa binayloss
 from timm.optim import create_optimizer_v2, optimizer_kwargs
 from timm.scheduler import *
 from timm.utils import ApexScaler, NativeScaler
 from scheduler.scheduler_factory import create_scheduler
 from models.gc_vit import *
 from tensorboard import TensorboardLogger
-
+#them nhung khong dung
+import torch.nn as nn
+criterion = nn.BCEWithLogitsLoss()
 try:
     from apex import amp
     from apex.parallel import DistributedDataParallel as ApexDDP
