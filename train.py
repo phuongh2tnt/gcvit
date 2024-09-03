@@ -184,7 +184,7 @@ group.add_argument('--warmup-lr', type=float, default=1e-6, metavar='LR',
                     help='warmup learning rate (default: 1e-6)')
 group.add_argument('--min-lr', type=float, default=5e-6, metavar='LR',
                     help='lower lr bound for cyclic schedulers that hit 0 (5e-6)')
-group.add_argument('--epochs', type=int, default=310, metavar='N',
+group.add_argument('--epochs', type=int, default=100, metavar='N',
                     help='number of epochs to train (default: 310)')
 group.add_argument('--epoch-repeats', type=float, default=0., metavar='N',
                     help='epoch repeat multiplier (number of times to repeat dataset epoch per train epoch).')
@@ -642,7 +642,7 @@ def main():
             ])
             args.experiment = exp_name
 
-        output_dir = utils.get_outdir(args.output if args.output else './output/train', exp_name)
+        output_dir = utils.get_outdir(args.output if args.output else '/content/drive/My Drive/AI/gcvit', exp_name)
         decreasing = True if eval_metric == 'loss' else False
         saver = utils.CheckpointSaver(
             model=model, optimizer=optimizer, args=args, model_ema=model_ema, amp_scaler=loss_scaler,
