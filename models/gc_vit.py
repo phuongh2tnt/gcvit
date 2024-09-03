@@ -776,11 +776,9 @@ class GCViT(nn.Module):
 def _create_gc_vit(variant, pretrained=False, **kwargs):
 
     return build_model_with_cfg(
-        GCViT,
-        variant,
-        pretrained,
-        **kwargs,
+        model_cls=GCViT, variant=variant, pretrained=pretrained, default_cfg=default_cfgs[variant], **kwargs
     )
+
 
 
 @register_model
