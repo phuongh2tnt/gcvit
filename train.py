@@ -108,7 +108,7 @@ group.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='Resume full model and optimizer state from checkpoint (default: none)')
 group.add_argument('--no-resume-opt', action='store_true', default=False,
                     help='prevent resume of optimizer state when resuming model')
-group.add_argument('--num-classes', type=int, default=None, metavar='N',
+group.add_argument('--num-classes', type=int, default=2, metavar='N',
                     help='number of label classes (Model default if None)')
 group.add_argument('--gp', default=None, type=str, metavar='POOL',
                     help='Global pool type, one of (fast, avg, max, avgmax, avgmaxc). Model default if None.')
@@ -613,7 +613,7 @@ def main():
     best_metric = None
     best_epoch = None
     saver = None
-    output_dir = None
+    output_dir = '/content/drive/My Drive/AI/gcvit'
     if args.rank == 0:
         log_dir = './log_dir/' + '_' + args.tag
         os.makedirs(log_dir, exist_ok=True)
