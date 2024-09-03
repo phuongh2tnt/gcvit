@@ -581,7 +581,7 @@ def main():
         collate_fn=collate_fn,
         pin_memory=args.pin_mem,
         use_multi_epochs_loader=args.use_multi_epochs_loader,
-        worker_seeding=args.worker_seeding,
+        #worker_seeding=args.worker_seeding,
     )
     loader_eval = create_loader(
         dataset_eval,
