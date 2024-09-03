@@ -674,12 +674,13 @@ def main():
             ])
             args.experiment = exp_name
 
-        output_dir = utils.get_outdir(args.output if args.output else '/content/drive/My Drive/AI/gcvit', exp_name)
+        #output_dir = utils.get_outdir(args.output if args.output else '/content/drive/My Drive/AI/gcvit', exp_name)
+        output_dir = utils.get_outdir(args.output if args.output else './output/train', exp_name)
         decreasing = True if eval_metric == 'loss' else False
-        save_model_checkpoint(model, optimizer, epoch, save_metric, checkpoint_dir)
-        #saver = CustomCheckpointSaver(
-         #   model=model, optimizer=optimizer, args=args, model_ema=model_ema, amp_scaler=loss_scaler,
-          #  checkpoint_dir=output_dir, recovery_dir=output_dir, decreasing=decreasing, max_history=args.checkpoint_hist)
+        #save_model_checkpoint(model, optimizer, epoch, save_metric, checkpoint_dir)
+        saver = utils.CheckpointSaver(
+            model=model, optimizer=optimizer, args=args, model_ema=model_ema, amp_scaler=loss_scaler,
+            checkpoint_dir=output_dir, recovery_dir=output_dir, decreasing=decreasing, max_history=args.checkpoint_hist)
         with open(os.path.join(output_dir, 'args.yaml'), 'w') as f:
             f.write(args_text)
 
