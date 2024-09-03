@@ -325,7 +325,6 @@ def validate(args):
             batch_time.update(time.time() - end)
             end = time.time()
 
-            # Display images and their labels
             if batch_idx % args.log_freq == 0:
                 _logger.info(
                     'Test: [{0:>4d}/{1}]  '
@@ -343,12 +342,6 @@ def validate(args):
                     )
                 )
 
-                # Display image and label (for the first image in the batch)
-                if len(loader.dataset.samples) > 0:
-                    img_path = loader.dataset.samples[batch_idx * args.batch_size][0]  # Path of the first image in the batch
-                    img_label = loader.dataset.samples[batch_idx * args.batch_size][1]  # Label of the first image in the batch
-                    _logger.info(f'Image Path: {img_path}, Label: {img_label}')
-
     if real_labels is not None:
         # real labels mode replaces topk values at the end
         top1a, top5a = real_labels.get_accuracy(k=1), real_labels.get_accuracy(k=5)
@@ -361,20 +354,13 @@ def validate(args):
         param_count=round(param_count / 1e6, 2),
         img_size=data_config['input_size'][-1],
         crop_pct=crop_pct,
+        interpolation=data_config['interpolation'],
     )
-    if args.eval:
-        results['precision'] = results['top1']
-        results['recall'] = results['top5']
-        results['f1'] = (2 * results['precision'] * results['recall']) / (results['precision'] + results['recall'])
-        _logger.info('Evaluation Metrics: {}'.format(results))
 
-    if not args.no_save and not args.no_results:
-        if not os.path.exists(args.results_dir):
-            os.makedirs(args.results_dir, exist_ok=True)
-        save_results(results, args.results_dir, args.results_file)
+    _logger.info(' * Acc@1 {:.3f} ({:.3f}) Acc@5 {:.3f} ({:.3f})'.format(
+       results['top1'], results['top1_err'], results['top5'], results['top5_err']))
 
     return results
-
 
 
 def _try_run(args, initial_batch_size):
